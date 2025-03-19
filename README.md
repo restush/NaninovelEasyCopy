@@ -11,3 +11,6 @@ Easy copy is a tool for copy character &amp; camera command directly from inspec
   - Directly copy command from inspector
   - The mirrored gameobject are 1:1 to original Naninovel character & camera. A changes values of the mirrored gameobject, it will also change the original gameobject.
 
+#### Download
+  - https://github.com/restush/NaninovelEasyCopy/releases
+  - Or copy this git into your Unity Project
