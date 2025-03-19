@@ -3,7 +3,7 @@ Easy copy is a tool for copy character &amp; camera command directly from inspec
 
 ![Camera](https://github.com/user-attachments/assets/54247144-046e-43bf-b9ee-fbf4da4d3b27)
 
-![Character](https://github.com/user-attachments/assets/f0ae8207-12c8-4984-bd91-9f859b6edbe1)
+![Character](https://github.com/user-attachments/assets/ead3bf1e-bcc1-43c2-a1a0-a79cf5805447)
 
 
 #### Aim(s)
