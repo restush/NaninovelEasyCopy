@@ -1,0 +1,33 @@
+:root {
+    --background-color: rgb(170, 170, 170);
+}
+
+.dark-theme {
+    --background-color: rgb(20, 20, 20);
+}
+
+.light-theme {
+    --background-color: rgb(170, 170, 170);
+}
+
+.container {
+    background-color: var(--background-color);
+    transition-property: background-color;
+    transition-timing-function: ease-in;
+    transition-duration: 0.25s;
+    transition-delay: 0.125s;
+}
+
+.animate-set-to-left {
+    transition-property: translate;
+    translate: 600px 0;
+    transition-duration: 0s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.animate-to-left {
+    transition-property: translate;
+    translate: 0 0;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-cubic;
+}

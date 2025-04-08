@@ -1,76 +1,99 @@
-﻿using Naninovel;
-using UnityEngine;
-using UnityEngine.UIElements;
-
-
-public class NECCamera : NaninovelEasyCopy
+﻿namespace AmoyFeels.EasyCopy
 {
-    public Transform TargetObj { get; set; }
+#if UNITY_EDITOR
 
-    private Camera _camera;
+    using UnityEngine;
+    using UnityEngine.UIElements;
+    using UnityEditor;
+    using System.Collections.Generic;
+    using UnityEngine.TextCore.Text;
+    using Naninovel.Metadata;
 
-    // make prop if null then get children
-    public Camera Camera
+    public abstract class NaninovelEasyCopy : MonoBehaviour
     {
-        get
+        public virtual Transform TargetObj { get; set; }
+
+        public static Actor[] allActor { get; set; }
+        public static List<string> characters { get; set; }
+
+        public abstract void CreateInspector(VisualElement rootVisualElement);
+
+        public abstract void OnNaninovelInitializeFinish();
+        public virtual Texture GetIcon()
         {
-            if (_camera == null)
+            return null;
+        }
+
+
+        protected static string ToString(float value, bool secondDigit = false)
+        {
+            if (secondDigit)
+                return value.ToString("0.##");
+            return value.ToString("0.#");
+        }
+
+
+        protected virtual TextField CreateCommandField(string label, VisualElement root)
+        {
+            var textField = new TextField(label)
             {
-                _camera = TargetObj.GetComponentInChildren<Camera>();
+                style = { flexGrow = 1 }
+            };
+
+            var copyButton = new Button(() =>
+            {
+                EditorGUIUtility.systemCopyBuffer = textField.value;
+                Debug.Log("Copied to clipboard: " + textField.value);
+            })
+            { text = "Copy" };
+
+            var horizontalContainer = new VisualElement() { style = { flexDirection = FlexDirection.Row, flexGrow = 1 } };
+            horizontalContainer.Add(textField);
+            horizontalContainer.Add(copyButton);
+            root.Add(horizontalContainer);
+            return textField;
+        }
+
+        protected virtual Toggle AddCommandPrefix(VisualElement root, System.Action cb = null)
+        {
+            var toggleCommandPrefix = new Toggle("Command Prefix");
+            toggleCommandPrefix.RegisterValueChangedCallback((evt) =>
+            {
+                EditorPrefs.SetBool("NaninovelEasyCopyEditor_CommandPrefix", evt.newValue);
+                cb?.Invoke();
+            });
+
+            toggleCommandPrefix.value = EditorPrefs.GetBool("NaninovelEasyCopyEditor_CommandPrefix", true);
+
+            root.Add(toggleCommandPrefix);
+            return toggleCommandPrefix;
+        }
+
+        protected virtual bool DestroyIf()
+        {
+            return (TargetObj == null);
+        }
+
+
+        protected virtual void Awake() { }
+        protected virtual void Start() { }
+        protected virtual void Update() { }
+        protected virtual void LateUpdate()
+        {
+
+            if (DestroyIf())
+            {
+                Destroy(gameObject);
+                return;
             }
-            return _camera;
-        }
-    }
 
-    private void LateUpdate()
-    {
-        if (TargetObj == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-}
-
-public class NECCharacter : NaninovelEasyCopy
-{
-    public Transform TargetObj { get; set; }
-    private TransitionalRenderer _renderer;
-    public TransitionalRenderer Renderer
-    {
-        get
-        {
-            if (_renderer == null)
-                _renderer = TargetObj.GetComponentInChildren<TransitionalRenderer>();
-            return _renderer;
-        }
-    }
-
-    private ICharacterActor _actor;
-
-    public ICharacterActor Actor
-    {
-        get
-        {
-            _actor ??= Engine.GetService<ICharacterManager>().GetActor(ActorName);
-            return _actor;
-        }
-    }
-
-    public string ActorName => TargetObj.gameObject.name;
-
-
-    private void LateUpdate()
-    {
-        if (TargetObj == null)
-        {
-            Destroy(gameObject);
-            return;
         }
 
-    }
-}
+        protected virtual void OnDestroy() { }
 
-public class NaninovelEasyCopy : MonoBehaviour
-{
+
+
+    }
+
+#endif 
 }
