@@ -178,6 +178,9 @@
                 charAllText.value = CharacterPos(necCharacter.Renderer) + addSpace +
                     CharacterScale(necCharacter.Renderer).Replace($"@char {actorName}", "")
                     + addSpace + CharacterRotation(necCharacter.Renderer).Replace($"@char {actorName}", "");
+
+                charAllText.value = charAllText.value.Replace(" rotation:,,", string.Empty);
+
             }
 
 
@@ -259,7 +262,7 @@
                 if (!StringUtils.IsNullEmptyOrWhiteSpace(necCharacter.Actor.Appearance))
                     actorName += "." + necCharacter.Actor.Appearance;
 
-                string result = commandPrefix ? $"@char {actorName} rot:" : "rot:";
+                string result = commandPrefix ? $"@char {actorName} rotation:" : "rotation:";
 
                 result = result +
                     $"{(rotation.x != 0 ? ToString(rotation.x) : "")}," +
